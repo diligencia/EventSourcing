@@ -2,7 +2,6 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
-using System.Text;
 
 namespace Diligencia.EventSourcing
 {
@@ -29,6 +28,7 @@ namespace Diligencia.EventSourcing
                     && parameter.ParameterType == @event.GetType())
                 {
                     method.Invoke(this, new object[1] { @event });
+                    break;
                 }
             }
         }

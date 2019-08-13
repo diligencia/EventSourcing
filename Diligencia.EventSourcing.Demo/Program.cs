@@ -1,5 +1,8 @@
-﻿using Diligencia.EventSourcing.Demo.Commands;
+﻿using Diligencia.EventSourcing.AzureEventStore;
+using Diligencia.EventSourcing.Demo.Commands;
+using Microsoft.Extensions.Configuration;
 using System;
+using System.IO;
 
 namespace Diligencia.EventSourcing.Demo
 {
@@ -7,6 +10,11 @@ namespace Diligencia.EventSourcing.Demo
     {
         static void Main(string[] args)
         {
+            var config = new ConfigurationBuilder()
+                .SetBasePath(Directory.GetCurrentDirectory())
+                .AddJsonFile("config.json")
+                .Build();
+
             Guid id = Guid.NewGuid();
 
             CreateNewPersonCommand newPersonCommand = new CreateNewPersonCommand
@@ -34,7 +42,7 @@ namespace Diligencia.EventSourcing.Demo
                 Age = 30
             };
 
-            MemoryEventStore store = new MemoryEventStore();
+            StorageEventStore store = new StorageEventStore(config["storageConnectionString"]);
 
             StateConnector connector = new StateConnector(store);
 

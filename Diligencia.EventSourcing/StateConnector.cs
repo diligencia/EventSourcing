@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Linq;
 
 namespace Diligencia.EventSourcing
 {
@@ -13,11 +14,15 @@ namespace Diligencia.EventSourcing
 
         public T Get<T>(Guid aggregate) where T : AggregateRoot, new()
         {
-            var root = new T();
-
+            T root = null;
             var allEvents = _store.Get(aggregate);
 
-            root.FromHistory(allEvents);
+            if (allEvents.Any())
+            {
+                root = new T();
+
+                root.FromHistory(allEvents);
+            }
 
             return root;
         }

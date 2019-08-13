@@ -1,2 +1,4 @@
 **/obj/
 **/bin/
+.vs/
+Diligencia.EventSourcing.Demo/config.json
