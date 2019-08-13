@@ -45,7 +45,9 @@ namespace Diligencia.EventSourcing.AzureEventStore
                 }
             } while (token != null);
 
-            return allEvents;
+            return allEvents
+                .OrderBy(e => e.Order)
+                .ToList();
         }
 
         public void Save(Event @event)
@@ -56,11 +58,12 @@ namespace Diligencia.EventSourcing.AzureEventStore
                 RowKey = DateTime.UtcNow.Ticks.ToString(),
                 Id = @event.AggregateRootId,
                 EventType = @event.GetType().Name,
+                Order = @event.Order,
                 Data = JsonConvert.SerializeObject(@event)
             };
 
             TableOperation newEvent = TableOperation.Insert(tableEvent);
-            _cloudTable.ExecuteAsync(newEvent);
+            _cloudTable.Execute(newEvent);
         }
     }
 }

@@ -29,6 +29,10 @@ namespace Diligencia.EventSourcing
 
         public void Save(Event @event)
         {
+            // Get the other events for this new event to determine the order.
+            var otherEvents = _store.Get(@event.AggregateRootId);
+            @event.Order = otherEvents.LastOrDefault()?.Order + 1 ?? 1;
+
             _store.Save(@event);
         }
     }

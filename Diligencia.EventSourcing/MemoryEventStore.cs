@@ -16,7 +16,10 @@ namespace Diligencia.EventSourcing
 
         public List<Event> Get(Guid aggregate)
         {
-            return _events.Where(c => c.AggregateRootId == aggregate).ToList();
+            return _events
+                .Where(c => c.AggregateRootId == aggregate)
+                .OrderBy(e => e.Order)
+                .ToList();
         }
 
         public void Save(Event @event)
