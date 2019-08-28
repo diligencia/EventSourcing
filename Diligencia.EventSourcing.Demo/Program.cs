@@ -1,6 +1,7 @@
 ﻿using Diligencia.EventSourcing.AzureEventStore;
 using Diligencia.EventSourcing.Demo.Commands;
 using Microsoft.Extensions.Configuration;
+using Microsoft.Extensions.DependencyInjection;
 using System;
 using System.IO;
 
@@ -11,9 +12,17 @@ namespace Diligencia.EventSourcing.Demo
         static void Main(string[] args)
         {
             var config = new ConfigurationBuilder()
-                .SetBasePath(Directory.GetCurrentDirectory())
-                .AddJsonFile("config.json")
-                .Build();
+               .SetBasePath(Directory.GetCurrentDirectory())
+               .AddJsonFile("config.json")
+               .Build();
+
+            var serviceProvider = new ServiceCollection()
+                .AddTransient<IEventStore>(s => new StorageEventStore(config["storageConnectionString"]))
+                .AddTransient<StateConnector, StateConnector>()
+                .AddTransient<ICommandHandler<CreateNewPersonCommand>, PersonCommandHandler>()
+                .AddTransient<ICommandHandler<ChangeAgeCommand>, PersonCommandHandler>()
+                .AddTransient<ICommandHandler<ChangeNameCommand>, PersonCommandHandler>()
+                .BuildServiceProvider();
 
             Guid id = Guid.NewGuid();
 
@@ -42,16 +51,13 @@ namespace Diligencia.EventSourcing.Demo
                 Age = 30
             };
 
-            StorageEventStore store = new StorageEventStore(config["storageConnectionString"]);
+            CommandHandler commandHandler = new CommandHandler(serviceProvider);
+            commandHandler.Handle(newPersonCommand);
+            commandHandler.Handle(nameToJane);
+            commandHandler.Handle(ageTo29Command);
+            commandHandler.Handle(ageTo30Command);
 
-            StateConnector connector = new StateConnector(store);
-
-            PersonCommandHandler personCommandHandler = new PersonCommandHandler(connector);
-            personCommandHandler.Handle(newPersonCommand);
-            personCommandHandler.Handle(nameToJane);
-            personCommandHandler.Handle(ageTo29Command);
-            personCommandHandler.Handle(ageTo30Command);
-
+            StateConnector connector = serviceProvider.GetService<StateConnector>();
             var foundPerson = connector.Get<Person>(id);
 
             Console.WriteLine(foundPerson.ToString());
