@@ -2,6 +2,12 @@
 
   <PropertyGroup>
     <TargetFramework>netstandard2.0</TargetFramework>
+    <Authors>Diligencia</Authors>
+    <Description>Extends the EventSourcing framework with an event store for Azure. This allows you to persist your events to Azure Table Storage or CosmosDB using the Table API.</Description>
+    <Copyright>Diligencia 2019</Copyright>
+    <PackageReleaseNotes>Initial version of the azure event store extension for the EventSourcing framework</PackageReleaseNotes>
+    <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
+    <Version>1.0.1</Version>
   </PropertyGroup>
 
   <ItemGroup>

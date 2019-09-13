@@ -17,7 +17,8 @@ namespace Diligencia.EventSourcing.Demo
                .Build();
 
             var serviceProvider = new ServiceCollection()
-                .AddTransient<IEventStore>(s => new StorageEventStore(config["storageConnectionString"]))
+                .AddTransient<EventPublisher, EventPublisher>()
+                .AddTransient<IEventStore>(s => new StorageEventStore(config["storageConnectionString"], s.GetService<EventPublisher>()))
                 .AddTransient<StateConnector, StateConnector>()
                 .AddTransient<ICommandHandler<CreateNewPersonCommand>, PersonCommandHandler>()
                 .AddTransient<ICommandHandler<ChangeAgeCommand>, PersonCommandHandler>()

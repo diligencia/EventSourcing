@@ -1,20 +1,20 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
 
 namespace Diligencia.EventSourcing
 {
-    public class MemoryEventStore : IEventStore
+    public class MemoryEventStore : EventStore
     {
         private List<Event> _events;
 
-        public MemoryEventStore()
+        public MemoryEventStore(EventPublisher publisher)
+            :base (publisher)
         {
             _events = new List<Event>();
         }
 
-        public List<Event> Get(Guid aggregate)
+        public override List<Event> Get(Guid aggregate)
         {
             return _events
                 .Where(c => c.AggregateRootId == aggregate)
@@ -22,7 +22,7 @@ namespace Diligencia.EventSourcing
                 .ToList();
         }
 
-        public void Save(Event @event)
+        protected override void SaveInStore(Event @event)
         {
             _events.Add(@event);
         }

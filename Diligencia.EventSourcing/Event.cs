@@ -6,6 +6,6 @@ namespace Diligencia.EventSourcing
     {
         public Guid AggregateRootId { get; set; }
 
-        internal int Order { get; set; }
+        public int Order { get; set; }
     }
 }

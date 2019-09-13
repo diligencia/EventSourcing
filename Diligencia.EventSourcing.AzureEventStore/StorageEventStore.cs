@@ -6,11 +6,12 @@ using System.Linq;
 
 namespace Diligencia.EventSourcing.AzureEventStore
 {
-    public class StorageEventStore : IEventStore
+    public class StorageEventStore : EventStore
     {
         private CloudTable _cloudTable;
 
-        public StorageEventStore(string connectionString)
+        public StorageEventStore(string connectionString, EventPublisher eventPublisher)
+            : base(eventPublisher)
         {
             var account = CloudStorageAccount.Parse(connectionString);
             CloudTableClient client = account.CreateCloudTableClient();
@@ -18,7 +19,7 @@ namespace Diligencia.EventSourcing.AzureEventStore
             _cloudTable.CreateIfNotExistsAsync();
         }
 
-        public List<Event> Get(Guid aggregateId)
+        public override List<Event> Get(Guid aggregateId)
         {
             TableQuery<TableEvent> query = new TableQuery<TableEvent>()
                 .Where(TableQuery.GenerateFilterCondition("PartitionKey", QueryComparisons.Equal, aggregateId.ToString()));
@@ -50,7 +51,7 @@ namespace Diligencia.EventSourcing.AzureEventStore
                 .ToList();
         }
 
-        public void Save(Event @event)
+        protected override void SaveInStore(Event @event)
         {
             TableEvent tableEvent = new TableEvent
             {
