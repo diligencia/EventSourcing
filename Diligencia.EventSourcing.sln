@@ -9,7 +9,9 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Diligencia.EventSourcing.De
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Diligencia.EventSourcing.AzureEventStore", "Diligencia.EventSourcing.AzureEventStore\Diligencia.EventSourcing.AzureEventStore.csproj", "{9D7E8495-2E9B-4A20-9F34-6E0A2B73D998}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Diligencia.EventSourcing.UnitTests", "Diligencia.EventSourcing.UnitTests\Diligencia.EventSourcing.UnitTests.csproj", "{94BACEE5-EBD7-4D4B-A4FA-D8C9C757BDB6}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Diligencia.EventSourcing.UnitTests", "Diligencia.EventSourcing.UnitTests\Diligencia.EventSourcing.UnitTests.csproj", "{94BACEE5-EBD7-4D4B-A4FA-D8C9C757BDB6}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Diligencia.EventSourcing.SqlStore", "Diligencia.EventSourcing.SqlStore\Diligencia.EventSourcing.SqlStore.csproj", "{B7EDEF89-0369-4C0E-ABD7-E1EFD3F448C0}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -33,6 +35,10 @@ Global
 		{94BACEE5-EBD7-4D4B-A4FA-D8C9C757BDB6}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{94BACEE5-EBD7-4D4B-A4FA-D8C9C757BDB6}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{94BACEE5-EBD7-4D4B-A4FA-D8C9C757BDB6}.Release|Any CPU.Build.0 = Release|Any CPU
+		{B7EDEF89-0369-4C0E-ABD7-E1EFD3F448C0}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{B7EDEF89-0369-4C0E-ABD7-E1EFD3F448C0}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{B7EDEF89-0369-4C0E-ABD7-E1EFD3F448C0}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{B7EDEF89-0369-4C0E-ABD7-E1EFD3F448C0}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

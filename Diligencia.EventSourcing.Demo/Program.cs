@@ -1,5 +1,6 @@
 ﻿using Diligencia.EventSourcing.AzureEventStore;
 using Diligencia.EventSourcing.Demo.Commands;
+using Diligencia.EventSourcing.SqlStore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using System;
@@ -18,7 +19,7 @@ namespace Diligencia.EventSourcing.Demo
 
             var serviceProvider = new ServiceCollection()
                 .AddTransient<EventPublisher, EventPublisher>()
-                .AddTransient<IEventStore>(s => new StorageEventStore(config["storageConnectionString"], s.GetService<EventPublisher>()))
+                .AddTransient<IEventStore>(s => new SqlEventStore(config["connectionstring"], s.GetService<EventPublisher>()))
                 .AddTransient<StateConnector, StateConnector>()
                 .AddTransient<ICommandHandler<CreateNewPersonCommand>, PersonCommandHandler>()
                 .AddTransient<ICommandHandler<ChangeAgeCommand>, PersonCommandHandler>()

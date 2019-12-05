@@ -15,7 +15,7 @@ namespace Diligencia.EventSourcing
         }
 
         /// <summary>
-        /// Publish the occurance of <see cref="event">event</see> to all subscribed components.
+        /// Publish the occurence of <see cref="event">event</see> to all subscribed components.
         /// </summary>
         /// <param name="event"></param>
         public void Publish(Event @event)
@@ -34,7 +34,7 @@ namespace Diligencia.EventSourcing
         }
 
         /// <summary>
-        /// Allows a component to subscribe for even occurances
+        /// Allows a component to subscribe for event occurences
         /// </summary>
         /// <param name="event"></param>
         public ISubscription Subscribe(Type eventType, Action<Event> @action)

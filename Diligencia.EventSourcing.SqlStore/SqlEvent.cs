@@ -1,11 +1,12 @@
-﻿using Microsoft.Azure.Cosmos.Table;
-using System;
+﻿using System;
 
-namespace Diligencia.EventSourcing.AzureEventStore
+namespace Diligencia.EventSourcing.SqlStore
 {
-    internal class TableEvent : TableEntity
+    public class SqlEvent
     {
         public Guid Id { get; set; }
+
+        public Guid AggregateId { get; set; }
 
         public string EventType { get; set; }
 
