@@ -3,9 +3,9 @@ using System;
 
 namespace Diligencia.EventSourcing.AzureEventStore
 {
-    internal class TableEvent : TableEntity
+    internal class TableEvent : TableEntity, IEventStoreItem
     {
-        public Guid Id { get; set; }
+        public Guid AggregateId { get; set; }
 
         public string EventType { get; set; }
 

@@ -1,0 +1,7 @@
+﻿CREATE TABLE events (
+	[Id] UNIQUEIDENTIFIER PRIMARY KEY,
+	[AggregateId] UNIQUEIDENTIFIER,
+	[Order] INT,
+	[Type] VARCHAR(100),
+	[Data] VARCHAR(max)
+)

@@ -1,8 +1,8 @@
 ﻿using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
+using System.Data;
 using System.Data.SqlClient;
-using System.Linq;
 
 namespace Diligencia.EventSourcing.SqlStore
 {
@@ -19,16 +19,19 @@ namespace Diligencia.EventSourcing.SqlStore
         public override List<Event> Get(Guid aggregateId)
         {
             List<Event> events = new List<Event>();
-            List<SqlEvent> sqlEvents = new List<SqlEvent>();
 
             using (SqlConnection connection = new SqlConnection(_connectionString))
             {
                 connection.Open();
 
-                string sqlCommand = $"SELECT * FROM events WHERE AggregateId = '{aggregateId}' ORDER BY [Order] ASC";
+                string sqlCommand = $"SELECT * FROM events WHERE AggregateId = @aggregateId ORDER BY [Order] ASC";
+                var param = new SqlParameter("aggregateId", SqlDbType.UniqueIdentifier);
+                param.Value = aggregateId;
 
                 using (SqlCommand command = new SqlCommand(sqlCommand, connection))
                 {
+                    command.Parameters.Add(param);
+
                     using (SqlDataReader reader = command.ExecuteReader())
                     {
                         while (reader.Read())
@@ -40,22 +43,11 @@ namespace Diligencia.EventSourcing.SqlStore
                             sqlEvent.EventType = reader["Type"].ToString();
                             sqlEvent.Data = reader["Data"].ToString();
 
-                            sqlEvents.Add(sqlEvent);
+                            Event @event = ToEvent(sqlEvent);
+                            events.Add(@event);
                         }
                     }
                 }
-            }
-
-            foreach (SqlEvent @event in sqlEvents)
-            {
-                Type eventType = AppDomain.CurrentDomain.GetAssemblies()
-                    .Where(a => !a.IsDynamic)
-                    .SelectMany(a => a.GetTypes())
-                    .FirstOrDefault(t => t.Name.Equals(@event.EventType));
-
-                var currentEvent = Activator.CreateInstance(eventType);
-                JsonConvert.PopulateObject(@event.Data, currentEvent);
-                events.Add(currentEvent as Event);
             }
 
             return events;

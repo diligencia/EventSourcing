@@ -6,9 +6,13 @@
     <Description>A small framework to add EventSourcing to your application</Description>
     <Copyright>Diligencia 2019</Copyright>
     <PackageReleaseNotes>First release of the Diligencia Event Sourcing framework</PackageReleaseNotes>
-    <AssemblyVersion>1.0.2.0</AssemblyVersion>
-    <Version>1.0.2</Version>
+    <AssemblyVersion>1.0.3.0</AssemblyVersion>
+    <Version>1.0.3</Version>
     <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
   </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Newtonsoft.Json" Version="12.0.3" />
+  </ItemGroup>
 
 </Project>

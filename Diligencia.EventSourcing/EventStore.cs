@@ -1,5 +1,7 @@
-﻿using System;
+﻿using Newtonsoft.Json;
+using System;
 using System.Collections.Generic;
+using System.Linq;
 
 namespace Diligencia.EventSourcing
 {
@@ -22,5 +24,18 @@ namespace Diligencia.EventSourcing
         }
 
         protected abstract void SaveInStore(Event @event);
+
+        protected Event ToEvent(IEventStoreItem item)
+        {
+            Type eventType = AppDomain.CurrentDomain.GetAssemblies()
+                    .Where(a => !a.IsDynamic)
+                    .SelectMany(a => a.GetTypes())
+                    .FirstOrDefault(t => t.Name.Equals(item.EventType));
+
+            var currentEvent = Activator.CreateInstance(eventType);
+            JsonConvert.PopulateObject(item.Data, currentEvent);
+
+            return currentEvent as Event;
+        }
     }
 }

@@ -2,7 +2,7 @@
 
 namespace Diligencia.EventSourcing.SqlStore
 {
-    public class SqlEvent
+    public class SqlEvent : IEventStoreItem
     {
         public Guid Id { get; set; }
 

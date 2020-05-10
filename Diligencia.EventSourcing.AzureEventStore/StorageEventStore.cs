@@ -34,15 +34,7 @@ namespace Diligencia.EventSourcing.AzureEventStore
             
                 foreach (var @event in events.Results)
                 {
-                    Type eventType = AppDomain.CurrentDomain.GetAssemblies()
-                                        .Where(a => !a.IsDynamic)
-                                        .SelectMany(a => a.GetTypes())
-                                        .FirstOrDefault(t => t.Name.Equals(@event.EventType));
-
-                    var currentEvent = Activator.CreateInstance(eventType);
-                    JsonConvert.PopulateObject(@event.Data, currentEvent);
-
-                    allEvents.Add(currentEvent as Event);
+                    allEvents.Add(ToEvent(@event));
                 }
             } while (token != null);
 
@@ -57,7 +49,7 @@ namespace Diligencia.EventSourcing.AzureEventStore
             {
                 PartitionKey = @event.AggregateRootId.ToString(),
                 RowKey = DateTime.UtcNow.Ticks.ToString(),
-                Id = @event.AggregateRootId,
+                AggregateId = @event.AggregateRootId,
                 EventType = @event.GetType().Name,
                 Order = @event.Order,
                 Data = JsonConvert.SerializeObject(@event)
