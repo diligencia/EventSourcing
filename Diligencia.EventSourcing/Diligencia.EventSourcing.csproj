@@ -4,7 +4,7 @@
     <TargetFramework>netstandard2.0</TargetFramework>
     <Authors>Diligencia</Authors>
     <Description>A small framework to add EventSourcing to your application</Description>
-    <Copyright>Diligencia 2019</Copyright>
+    <Copyright>Diligencia 2020</Copyright>
     <PackageReleaseNotes>First release of the Diligencia Event Sourcing framework</PackageReleaseNotes>
     <AssemblyVersion>1.0.3.0</AssemblyVersion>
     <Version>1.0.3</Version>
