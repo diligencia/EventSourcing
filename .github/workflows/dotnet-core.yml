@@ -2,9 +2,15 @@ name: .NET Core
 
 on:
   push:
-    branches: [ master ]
+    branches:
+      - master
+      - release/*
+      - features/*
   pull_request:
-    branches: [ master ]
+    branches:      
+      - master
+      - release/*
+      - features/*
 
 jobs:
   build:
@@ -23,8 +29,3 @@ jobs:
       run: dotnet build --configuration Release --no-restore
     - name: Test
       run: dotnet test --no-restore --verbosity normal
-    - name: Publish NuGet
-      uses: brandedoutcast/publish-nuget@v2.5.2
-      with:
-        PROJECT_FILE_PATH: Diligencia.EventSourcing/Diligencia.EventSourcing.csproj
-        NUGET_KEY: ${{ secrets.NUGET_KEY }}
