@@ -29,3 +29,19 @@ jobs:
       run: dotnet build --configuration Release --no-restore
     - name: Test
       run: dotnet test --no-restore --verbosity normal
+    - name: Set version numer
+      if: contains(github.ref, 'releases')
+      uses: ncipollo/semantic-version-action@v1
+      env:
+        VERSION_NUMBER: ${{steps.version.outputs.tag}}
+        MAJOR_VERSION: ${{steps.version.outputs.major}}
+        MINOR_VERSION: ${{steps.version.outputs.minor}}
+        PATCH_VERSION: ${{steps.version.outputs.patch}}
+    - name: Publish NuGet
+      if: contains(github.ref, 'releases')
+      uses: brandedoutcast/publish-nuget@v2.5.2
+      with:
+        PROJECT_FILE_PATH: Diligencia.EventSourcing/Diligencia.EventSourcing.csproj
+        PACKAGE_NAME: Diligencia.EventSourcing
+        VERSION_STATIC: $MAJOR_VERSION.$MINOR_VERSION.$PATCH_VERSION
+        NUGET_KEY: ${{secrets.NUGET_KEY}} 
