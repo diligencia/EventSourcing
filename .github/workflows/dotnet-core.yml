@@ -19,16 +19,21 @@ jobs:
 
     steps:
     - uses: actions/checkout@v2
+    
     - name: Setup .NET Core
       uses: actions/setup-dotnet@v1
       with:
         dotnet-version: 3.1.101
+    
     - name: Install dependencies
       run: dotnet restore
+    
     - name: Build
       run: dotnet build --configuration Release --no-restore
+    
     - name: Test
       run: dotnet test --no-restore --verbosity normal
+    
     - name: Set version numer
       if: contains(github.ref, 'releases')
       uses: ncipollo/semantic-version-action@v1
@@ -37,6 +42,7 @@ jobs:
         MAJOR_VERSION: ${{steps.version.outputs.major}}
         MINOR_VERSION: ${{steps.version.outputs.minor}}
         PATCH_VERSION: ${{steps.version.outputs.patch}}
+    
     - name: Publish Diligencia.EventSourcing
       if: contains(github.ref, 'releases')
       uses: brandedoutcast/publish-nuget@v2.5.2
@@ -45,6 +51,7 @@ jobs:
         PACKAGE_NAME: Diligencia.EventSourcing
         VERSION_STATIC: $MAJOR_VERSION.$MINOR_VERSION.$PATCH_VERSION
         NUGET_KEY: ${{secrets.NUGET_KEY}} 
+    
     - name: Publish Diligencia.EventSourcing.AzureEventStore
       if: contains(github.ref, 'releases')
       uses: brandedoutcast/publish-nuget@v2.5.2
@@ -53,6 +60,7 @@ jobs:
         PACKAGE_NAME: Diligencia.EventSourcing.AzureEventStore
         VERSION_STATIC: $MAJOR_VERSION.$MINOR_VERSION.$PATCH_VERSION
         NUGET_KEY: ${{secrets.NUGET_KEY}} 
+
     - name: Publish Diligencia.EventSourcing.SqlStore
       if: contains(github.ref, 'releases')
       uses: brandedoutcast/publish-nuget@v2.5.2
@@ -61,3 +69,9 @@ jobs:
         PACKAGE_NAME: Diligencia.EventSourcing.SqlStore
         VERSION_STATIC: $MAJOR_VERSION.$MINOR_VERSION.$PATCH_VERSION
         NUGET_KEY: ${{secrets.NUGET_KEY}}
+
+    - name: Create a release
+      uses: actions/create-release@v1
+      with:
+        tag_name: v${{ steps.getversion.outputs.VERSION }}
+        release_name: v${{ steps.getversion.outputs.VERSION }}
