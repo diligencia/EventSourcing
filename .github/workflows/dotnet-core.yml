@@ -38,33 +38,14 @@ jobs:
       if: contains(github.ref, 'releases')
       uses: diligencia/semantic-branch-version@1.0
       id: getversion
-    
-    - name: Publish Diligencia.EventSourcing
-      if: contains(github.ref, 'releases')
-      uses: brandedoutcast/publish-nuget@v2.5.2
-      with:
-        PROJECT_FILE_PATH: Diligencia.EventSourcing/Diligencia.EventSourcing.csproj
-        PACKAGE_NAME: Diligencia.EventSourcing
-        VERSION_STATIC: ${{ steps.getversion.outputs.VERSION }}
-        NUGET_KEY: ${{secrets.NUGET_KEY}} 
-    
-    - name: Publish Diligencia.EventSourcing.AzureEventStore
-      if: contains(github.ref, 'releases')
-      uses: brandedoutcast/publish-nuget@v2.5.2
-      with:
-        PROJECT_FILE_PATH: Diligencia.EventSourcing.AzureEventStore/Diligencia.EventSourcing.AzureEventStore.csproj
-        PACKAGE_NAME: Diligencia.EventSourcing.AzureEventStore
-        VERSION_STATIC: ${{ steps.getversion.outputs.VERSION }}
-        NUGET_KEY: ${{secrets.NUGET_KEY}} 
 
-    - name: Publish Diligencia.EventSourcing.SqlStore
+    - name: Create packages
       if: contains(github.ref, 'releases')
-      uses: brandedoutcast/publish-nuget@v2.5.2
-      with:
-        PROJECT_FILE_PATH: Diligencia.EventSourcing.SqlStore/Diligencia.EventSourcing.SqlStore.csproj
-        PACKAGE_NAME: Diligencia.EventSourcing.SqlStore
-        VERSION_STATIC: ${{ steps.getversion.outputs.VERSION }}
-        NUGET_KEY: ${{secrets.NUGET_KEY}}
+      run: dotnet pack --no-build -c Release -o . -p:PackageVersion=${{ steps.getversion.outputs.VERSION }}
+    
+    - name: Push packages
+      if: contains(github.ref, 'releases')
+      run: dotnet nuget push *.nupkg -s https://api.nuget.org/v3/index.json -k ${{secrets.NUGET_KEY}} --skip-duplicate
 
     - name: Create a release
       if: contains(github.ref, 'releases')
