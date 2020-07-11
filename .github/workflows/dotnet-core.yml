@@ -50,6 +50,8 @@ jobs:
     - name: Create a release
       if: contains(github.ref, 'releases')
       uses: actions/create-release@v1
+      env:
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
       with:
         tag_name: v${{ steps.getversion.outputs.VERSION }}
         release_name: v${{ steps.getversion.outputs.VERSION }}
