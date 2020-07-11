@@ -45,7 +45,7 @@ jobs:
     
     - name: Push packages
       if: contains(github.ref, 'releases')
-      run: dotnet nuget push *.nupkg -s https://api.nuget.org/v3/index.json -k ${{secrets.NUGET_KEY}} --skip-duplicate
+      run: dotnet nuget push **\*.nupkg -s https://api.nuget.org/v3/index.json -k ${{secrets.NUGET_KEY}} --skip-duplicate
 
     - name: Create a release
       if: contains(github.ref, 'releases')
