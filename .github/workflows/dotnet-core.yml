@@ -34,14 +34,10 @@ jobs:
     - name: Test
       run: dotnet test --no-restore --verbosity normal
     
-    - name: Set version numer
+    - name: Get version numer
       if: contains(github.ref, 'releases')
-      uses: ncipollo/semantic-version-action@v1
-      env:
-        VERSION_NUMBER: ${{steps.version.outputs.tag}}
-        MAJOR_VERSION: ${{steps.version.outputs.major}}
-        MINOR_VERSION: ${{steps.version.outputs.minor}}
-        PATCH_VERSION: ${{steps.version.outputs.patch}}
+      uses: diligencia/semantic-branch-version@1.0
+      id: getversion
     
     - name: Publish Diligencia.EventSourcing
       if: contains(github.ref, 'releases')
@@ -49,7 +45,7 @@ jobs:
       with:
         PROJECT_FILE_PATH: Diligencia.EventSourcing/Diligencia.EventSourcing.csproj
         PACKAGE_NAME: Diligencia.EventSourcing
-        VERSION_STATIC: $MAJOR_VERSION.$MINOR_VERSION.$PATCH_VERSION
+        VERSION_STATIC: ${{ steps.getversion.outputs.VERSION }}
         NUGET_KEY: ${{secrets.NUGET_KEY}} 
     
     - name: Publish Diligencia.EventSourcing.AzureEventStore
@@ -58,7 +54,7 @@ jobs:
       with:
         PROJECT_FILE_PATH: Diligencia.EventSourcing.AzureEventStore/Diligencia.EventSourcing.AzureEventStore.csproj
         PACKAGE_NAME: Diligencia.EventSourcing.AzureEventStore
-        VERSION_STATIC: $MAJOR_VERSION.$MINOR_VERSION.$PATCH_VERSION
+        VERSION_STATIC: ${{ steps.getversion.outputs.VERSION }}
         NUGET_KEY: ${{secrets.NUGET_KEY}} 
 
     - name: Publish Diligencia.EventSourcing.SqlStore
@@ -67,7 +63,7 @@ jobs:
       with:
         PROJECT_FILE_PATH: Diligencia.EventSourcing.SqlStore/Diligencia.EventSourcing.SqlStore.csproj
         PACKAGE_NAME: Diligencia.EventSourcing.SqlStore
-        VERSION_STATIC: $MAJOR_VERSION.$MINOR_VERSION.$PATCH_VERSION
+        VERSION_STATIC: ${{ steps.getversion.outputs.VERSION }}
         NUGET_KEY: ${{secrets.NUGET_KEY}}
 
     - name: Create a release
