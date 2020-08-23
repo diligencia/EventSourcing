@@ -3,7 +3,11 @@ using System.Linq;
 
 namespace Diligencia.EventSourcing
 {
-    public class StateConnector
+    /// <summary>
+    /// Connects to the event store for saving <see cref="Event" /> in the correct order
+    /// and constructing instances of <see cref="AggregateRoot" /> by replaying all occured events for that aggregate
+    /// </summary>
+    public sealed class StateConnector
     {
         private IEventStore _store;
 
@@ -12,10 +16,17 @@ namespace Diligencia.EventSourcing
             _store = store;
         }
 
-        public T Get<T>(Guid aggregate) where T : AggregateRoot, new()
+        /// <summary>
+        /// Get an instance of an <see cref="AggregateRoot" /> by replaying all events
+        /// that occured for that aggregate
+        /// </summary>
+        /// <typeparam name="T">The type of the <see cref="AggregateRoot" /> to retrieve</typeparam>
+        /// <param name="aggregateRootId">The id of the <see cref="AggregateRoot"/> to retrieve</param>
+        /// <returns>An instance of <see cref="AggregateRoot" /></returns>
+        public T Get<T>(Guid aggregateRootId) where T : AggregateRoot, new()
         {
             T root = null;
-            var allEvents = _store.Get(aggregate);
+            var allEvents = _store.Get(aggregateRootId);
 
             if (allEvents.Any())
             {
@@ -27,6 +38,10 @@ namespace Diligencia.EventSourcing
             return root;
         }
 
+        /// <summary>
+        /// Saves a new <see cref="Event"/> in the correct order.
+        /// </summary>
+        /// <param name="event">The <see cref="Event" /> to store.</param>
         public void Save(Event @event)
         {
             // Get the other events for this new event to determine the order.

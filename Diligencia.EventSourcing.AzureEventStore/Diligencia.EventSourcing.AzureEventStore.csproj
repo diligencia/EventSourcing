@@ -12,11 +12,8 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <PackageReference Include="Diligencia.EventSourcing" Version="1.0.1" />
     <PackageReference Include="Microsoft.Azure.Cosmos.Table" Version="1.0.7" />
-  </ItemGroup>
-
-  <ItemGroup>
-    <ProjectReference Include="..\Diligencia.EventSourcing\Diligencia.EventSourcing.csproj" />
   </ItemGroup>
 
 </Project>

@@ -10,12 +10,9 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <PackageReference Include="Diligencia.EventSourcing" Version="1.0.1" />
     <PackageReference Include="Newtonsoft.Json" Version="12.0.3" />
     <PackageReference Include="System.Data.SqlClient" Version="4.8.1" />
-  </ItemGroup>
-
-  <ItemGroup>
-    <ProjectReference Include="..\Diligencia.EventSourcing\Diligencia.EventSourcing.csproj" />
   </ItemGroup>
 
 </Project>

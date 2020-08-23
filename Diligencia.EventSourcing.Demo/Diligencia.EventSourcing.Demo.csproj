@@ -14,6 +14,7 @@
 
   <ItemGroup>
     <ProjectReference Include="..\Diligencia.EventSourcing.AzureEventStore\Diligencia.EventSourcing.AzureEventStore.csproj" />
+    <ProjectReference Include="..\Diligencia.EventSourcing.ServiceCollectionExtension\Diligencia.EventSourcing.ServiceCollectionExtension.csproj" />
     <ProjectReference Include="..\Diligencia.EventSourcing.SqlStore\Diligencia.EventSourcing.SqlStore.csproj" />
     <ProjectReference Include="..\Diligencia.EventSourcing\Diligencia.EventSourcing.csproj" />
   </ItemGroup>

@@ -1,0 +1,13 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>netstandard2.0</TargetFramework>
+    <Description>Extension method to easily add the event sourcing framework to the microsoft service collection dependency injection</Description>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Diligencia.EventSourcing" Version="1.0.1" />
+    <PackageReference Include="Microsoft.Extensions.DependencyInjection.Abstractions" Version="3.1.7" />
+  </ItemGroup>
+
+</Project>
