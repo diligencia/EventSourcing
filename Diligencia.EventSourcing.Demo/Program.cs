@@ -1,5 +1,5 @@
-﻿using Diligencia.EventSourcing.AzureEventStore;
-using Diligencia.EventSourcing.Demo.Commands;
+﻿using Diligencia.EventSourcing.Demo.Commands;
+using Diligencia.EventSourcing.ServiceCollectionExtension;
 using Diligencia.EventSourcing.SqlStore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
@@ -17,14 +17,12 @@ namespace Diligencia.EventSourcing.Demo
                .AddJsonFile("config.json")
                .Build();
 
-            var serviceProvider = new ServiceCollection()
-                .AddTransient<EventPublisher, EventPublisher>()
-                .AddTransient<IEventStore>(s => new SqlEventStore(config["connectionstring"], s.GetService<EventPublisher>()))
-                .AddTransient<StateConnector, StateConnector>()
-                .AddTransient<ICommandHandler<CreateNewPersonCommand>, PersonCommandHandler>()
-                .AddTransient<ICommandHandler<ChangeAgeCommand>, PersonCommandHandler>()
-                .AddTransient<ICommandHandler<ChangeNameCommand>, PersonCommandHandler>()
-                .BuildServiceProvider();
+            IServiceCollection serviceCollection = new ServiceCollection();
+
+            serviceCollection.AddEventSourcing()
+                .AddTransient<IEventStore>(s => new SqlEventStore(config["connectionstring"], s.GetService<EventPublisher>()));
+
+            var serviceProvider = serviceCollection.BuildServiceProvider();
 
             Guid id = Guid.NewGuid();
 

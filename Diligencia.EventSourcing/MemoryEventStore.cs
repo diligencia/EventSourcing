@@ -4,7 +4,12 @@ using System.Linq;
 
 namespace Diligencia.EventSourcing
 {
-    public class MemoryEventStore : EventStore
+    /// <summary>
+    /// A memory implementation of <see cref="EventStore" />.
+    /// 
+    /// This class is used for testing purposes and should only be used on production environments with serious cause.
+    /// </summary>
+    public sealed class MemoryEventStore : EventStore
     {
         private List<Event> _events;
 

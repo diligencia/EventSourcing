@@ -3,7 +3,7 @@ using System.Collections.Generic;
 
 namespace Diligencia.EventSourcing
 {
-    public class EventPublisher : ISubscription
+    public sealed class EventPublisher : ISubscription
     {
         private Dictionary<Type, List<Action<Event>>> _registrations;
         private object _registrationsLock;
@@ -15,9 +15,9 @@ namespace Diligencia.EventSourcing
         }
 
         /// <summary>
-        /// Publish the occurence of <see cref="event">event</see> to all subscribed components.
+        /// Publish the occurence of <see cref="Event">event</see> to all subscribed components.
         /// </summary>
-        /// <param name="event"></param>
+        /// <param name="event">The even t to publish</param>
         public void Publish(Event @event)
         {
             if (@event == null) throw new ArgumentNullException(nameof(@event), "Event should not be null");
@@ -36,7 +36,8 @@ namespace Diligencia.EventSourcing
         /// <summary>
         /// Allows a component to subscribe for event occurences
         /// </summary>
-        /// <param name="event"></param>
+        /// <param name="event">The type of the event to subscribe on</param>
+        /// <param name="@action">The action that will be executed once the event occurs</param>
         public ISubscription Subscribe(Type eventType, Action<Event> @action)
         {
             if (eventType.BaseType != typeof(Event)) throw new ArgumentException("Can only subscribe to Event types");
