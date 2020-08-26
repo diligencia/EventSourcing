@@ -19,11 +19,21 @@ namespace Diligencia.EventSourcing.ServiceCollectionExtension
 
             foreach (Assembly assembly in assemblies)
             {
-                IEnumerable<Type> types = assembly.GetTypes().Where(type => type.IsAssignableFrom(typeof(ICommandHandler<>)) && !type.IsAbstract);
+                var commandHandlerTypes = assembly
+                    .GetTypes()
+                    .Where(t => t.GetInterfaces().Any(i => i.IsGenericType && i.GetGenericTypeDefinition().IsAssignableFrom(typeof(ICommandHandler<>))))
+                    .ToList();
 
-                foreach (Type type in types)
+                foreach (var commandHandlerType in commandHandlerTypes)
                 {
-                    services.AddTransient(type);
+                    List<Type> allGenericTypes = commandHandlerType.GetInterfaces().SelectMany(i => i.GetGenericArguments()).ToList();
+
+                    foreach (var genericType in allGenericTypes)
+                    {
+                        var serviceType = typeof(ICommandHandler<>).MakeGenericType(genericType);
+
+                        services.AddTransient(serviceType, commandHandlerType);
+                    }
                 }
             }
 
