@@ -4,16 +4,17 @@
     <TargetFramework>netstandard2.0</TargetFramework>
     <Authors>Diligencia</Authors>
     <Description>Extends the EventSourcing framework with an event store for Azure. This allows you to persist your events to Azure Table Storage or CosmosDB using the Table API.</Description>
-    <Copyright>Diligencia 2019</Copyright>
+    <Copyright>Diligencia 2020</Copyright>
     <PackageReleaseNotes>Initial version of the azure event store extension for the EventSourcing framework</PackageReleaseNotes>
     <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
-    <Version>1.0.2</Version>
-    <AssemblyVersion>1.0.2.0</AssemblyVersion>
+    <Version>1.1.0</Version>
+    <AssemblyVersion>1.1.0.0</AssemblyVersion>
+    <FileVersion>1.1.0.0</FileVersion>
   </PropertyGroup>
 
   <ItemGroup>
-    <PackageReference Include="Diligencia.EventSourcing" Version="1.0.1" />
-    <PackageReference Include="Microsoft.Azure.Cosmos.Table" Version="1.0.7" />
+    <PackageReference Include="Diligencia.EventSourcing" Version="1.1.0" />
+    <PackageReference Include="Microsoft.Azure.Cosmos.Table" Version="1.0.8" />
   </ItemGroup>
 
 </Project>

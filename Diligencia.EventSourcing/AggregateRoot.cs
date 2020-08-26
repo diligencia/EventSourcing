@@ -15,7 +15,7 @@ namespace Diligencia.EventSourcing
         /// </summary>
         public Guid Id { get; set; }
 
-        internal AggregateRoot()
+        public AggregateRoot()
         {
         }
 
